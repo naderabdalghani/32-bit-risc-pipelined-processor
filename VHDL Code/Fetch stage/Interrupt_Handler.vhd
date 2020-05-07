@@ -13,7 +13,7 @@ BEGIN
     INT_to_mem_stage <= D4;
 
     -- Port map DFF
-    DFF1: entity work.DFF(BEHAVIOURAL) port map (interrupt_signal,'0',CLK,D12);
+    DFF1: entity work.DFF(BEHAVIOURAL) port map (interrupt_signal,RST,CLK,D12);
     DFF2: entity work.DFF(BEHAVIOURAL) port map (D12,RST,CLK,D23);
     DFF3: entity work.DFF(BEHAVIOURAL) port map (D23,RST,CLK,D34);
     DFF4: entity work.DFF(BEHAVIOURAL) port map (D34,RST,CLK,D4);
