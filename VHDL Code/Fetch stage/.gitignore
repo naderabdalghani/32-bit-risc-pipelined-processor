@@ -2,4 +2,5 @@
 */
 !.gitignore
 !*.vhd
-!temp.txt
+!*.do
+!*.txt
