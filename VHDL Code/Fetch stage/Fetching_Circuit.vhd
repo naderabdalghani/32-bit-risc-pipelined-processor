@@ -18,24 +18,27 @@ signal fetch_reg_31_16,fetch_reg_15_0: std_logic_vector(15 downto 0); -- For fir
 signal fetch_reg_D: std_logic_vector(64 downto 0); -- Input to fetch reg
 signal fetch_reg_Q: std_logic_vector(64 downto 0); -- Output of fetch reg
 signal two_fetches_signal: std_logic; -- Two fetches before DFF
+signal if_de_write_enable: std_logic; -- Write enable for IF/DE
 BEGIN
     reset_signal <= RST or reset_signal_from_execution_circuit_branch_detection or reset_fetching_and_stall_PC;
     fetch_reg_D <= prediction_signal & PC & fetch_reg_31_16 & fetch_reg_15_0;
     two_fetches_signal <= (fetch_reg_Q(29) or fetch_reg_Q(28)) and (not TFF_output_signal);
+    if_de_write_enable <= not hazard_detection_LW;
+    TFF_input_signal <= fetch_reg_Q(29) or fetch_reg_Q(28);
     FE_ID <= fetch_reg_Q;
     
     -- Fetching first instruction
     with two_fetches_signal select fetch_reg_31_16 <=
     instruction_memory when '0',
-    (others => 'Z') when others;
+    fetch_reg_31_16 when others;
 
     -- Fetching second instruction
     with two_fetches_signal select fetch_reg_15_0 <=
     instruction_memory when '1',
-    (others => 'Z') when others;
+    fetch_reg_15_0 when others;
 
     -- Port map FE/ID buffer
-    FE_ID_REG: entity work.REG(BEHAVIOURAL) generic map (N=>65) port map (D=>fetch_reg_D, RST=>reset_signal, CLK=>CLK, WR_ENABLE=>hazard_detection_LW, Q=>fetch_reg_Q);
+    FE_ID_REG: entity work.REG(BEHAVIOURAL) generic map (N=>65) port map (D=>fetch_reg_D, RST=>reset_signal, CLK=>CLK, WR_ENABLE=> if_de_write_enable, Q=>fetch_reg_Q);
     -- Port map DFF
     DFF: entity work.DFF(BEHAVIOURAL) port map (two_fetches_signal,RST,CLK,two_fetches);
     -- Port map DFF as TFF
