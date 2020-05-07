@@ -1,0 +1,5 @@
+*
+*/
+!.gitignore
+!*.vhd
+!temp.txt
