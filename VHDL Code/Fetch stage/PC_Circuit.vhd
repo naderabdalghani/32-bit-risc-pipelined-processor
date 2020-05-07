@@ -37,7 +37,7 @@ BEGIN
 
     -- Mux #3
     with sel_mux3 select PC_D <=
-    data_ins_memory when "10" | "11" | "1U" | "1X",
+    data_ins_memory when "10" | "11" | "1U" | "1X",  -- As signals aren't initialized at first (at fetching first instruction from memory) 
     PC_signal when "01",
     mux_23 when others;
 
