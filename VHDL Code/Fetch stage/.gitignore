@@ -1,6 +1,6 @@
 *
 */
 !.gitignore
-!do files/*
+!do_files/*
 !*.vhd
 !*.txt
