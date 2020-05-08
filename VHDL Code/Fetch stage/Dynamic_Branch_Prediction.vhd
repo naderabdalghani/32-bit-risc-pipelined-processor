@@ -7,7 +7,9 @@ entity Dynamic_Branch IS
          reg_data: in std_logic_vector(31 downto 0); -- Register data to jump to
          first_16_bits_inst_mem: in std_logic_vector(15 downto 0); -- First 16 bit of the instruction which contains the op code , dest reg
          enable,CLK,RST,JZ_exe_stage,zero_flag: in std_logic;
-         prediction: out std_logic);
+         prediction: out std_logic;
+         select_reg: out std_logic_vector(2 downto 0);
+         prediction_address: out std_logic_vector(31 downto 0));
 end entity;
 
 architecture arch OF Dynamic_Branch IS
@@ -61,6 +63,8 @@ begin
     jz_signal <= (not first_16_bits_inst_mem(15)) and first_16_bits_inst_mem(14) and (not first_16_bits_inst_mem(11)) and (not first_16_bits_inst_mem(10)) and (not first_16_bits_inst_mem(9)); 
     unconditional_jmp <= ((not first_16_bits_inst_mem(15)) and first_16_bits_inst_mem(14)) and (not first_16_bits_inst_mem(11)) and (first_16_bits_inst_mem(10) or first_16_bits_inst_mem(9));
     prediction <= (prediction_signal or unconditional_jmp) and enable;
+    prediction_address <= reg_data;
+    select_reg <= first_16_bits_inst_mem(8 downto 6);
 
 end architecture;
 
