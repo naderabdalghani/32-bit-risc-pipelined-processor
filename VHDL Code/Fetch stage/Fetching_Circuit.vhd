@@ -12,7 +12,6 @@ END ENTITY;
 
 ARCHITECTURE arch OF Fetching_Circuit IS
 signal reset_signal: std_logic; -- To reset fetching register
-signal tri_state_enable: std_logic; -- Enables tri state to choose if it was the first fetch or the second one
 signal TFF_input_signal,TFF_output_signal: std_logic; -- To connect DFF with inverter then connect to and gate
 signal fetch_reg_31_16,fetch_reg_15_0: std_logic_vector(15 downto 0); -- For first and second fetch from instruction memory
 signal fetch_reg_D: std_logic_vector(64 downto 0); -- Input to fetch reg
