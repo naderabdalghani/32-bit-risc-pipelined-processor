@@ -20,5 +20,18 @@ force -freeze sim:/fetching_circuit/instruction_memory 9871 0
 run
 force -freeze sim:/fetching_circuit/instruction_memory 5738 0
 run
-
+force -freeze sim:/fetching_circuit/instruction_memory 9A25 0
+run
+force -freeze sim:/fetching_circuit/instruction_memory 3627 0
+run
+force -freeze sim:/fetching_circuit/instruction_memory 0625 0
+run
+run
+run
+run
+run
+force -freeze sim:/fetching_circuit/instruction_memory 16'h2625 0
+run
+run
+run
 
