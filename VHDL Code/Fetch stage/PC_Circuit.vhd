@@ -3,7 +3,7 @@ USE IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 ENTITY PC_Circuit IS
-PORT (data_exe_stage, data_prediction_circuit, data_ins_memory : in std_logic_vector(31 downto 0);
+PORT (data_exe_stage, data_prediction_circuit, data_data_memory : in std_logic_vector(31 downto 0);
       CLK, RST, wrong_decision, prediction_signal, reset_fetching_stall_PC, LW_use_case, interrupt1, return_interrupt, RET: in std_logic;
       PC: out std_logic_vector(31 downto 0));
 END ENTITY;
@@ -31,13 +31,13 @@ BEGIN
 
     -- Mux #2
     with sel_mux2 select mux_23 <=
-    data_ins_memory when "10" | "11",
+    data_data_memory when "10" | "11",
     mux_12 when "01",
     incrementd_PC when others;
 
     -- Mux #3
     with sel_mux3 select PC_D <=
-    data_ins_memory when "10" | "11" | "1U" | "1X",  -- As signals aren't initialized at first (at fetching first instruction from memory) 
+    data_data_memory when "10" | "11" | "1U" | "1X",  -- As signals aren't initialized at first (at fetching first instruction from data memory) 
     PC_signal when "01",
     mux_23 when others;
 

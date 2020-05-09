@@ -7,7 +7,7 @@ PORT (instruction_memory: std_logic_vector(15 downto 0);
       PC: std_logic_vector(31 downto 0);
       RST, CLK, reset_fetching_and_stall_PC, reset_signal_from_execution_circuit_branch_detection, hazard_detection_LW, prediction_signal: in std_logic;
       FE_ID: out std_logic_vector(64 downto 0);
-      two_fetches: out std_logic);
+      two_fetches,two_fetches_before_DFF: out std_logic);
 END ENTITY;
 
 ARCHITECTURE arch OF Fetching_Circuit IS
@@ -29,6 +29,7 @@ BEGIN
     FE_ID <= fetch_reg_Q;
     two_fetches <= two_fetches_signal_after_DFF;
     TFF_reset <= RST or two_fetches_signal_after_DFF;
+    two_fetches_before_DFF <= two_fetches_signal_before_DFF;
     
     -- Fetching first instruction
     with two_fetches_signal_before_DFF select fetch_reg_31_16 <=
