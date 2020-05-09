@@ -3,7 +3,7 @@ USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.numeric_std.all;
 
 entity Dynamic_Branch IS
-    PORT(address: in std_logic_vector(4 downto 0); -- Address to be updated from ececute stage
+    PORT(address: in std_logic_vector(4 downto 0); -- Address to be updated from execute stage
          reg_data: in std_logic_vector(31 downto 0); -- Register data to jump to
          first_16_bits_inst_mem: in std_logic_vector(15 downto 0); -- First 16 bit of the instruction which contains the op code , dest reg
          enable,CLK,RST,JZ_exe_stage,zero_flag: in std_logic;
