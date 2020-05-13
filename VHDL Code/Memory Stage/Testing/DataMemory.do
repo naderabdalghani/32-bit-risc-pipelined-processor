@@ -1,3 +1,4 @@
+vsim -gui work.data_memory
 add wave -position end  sim:/data_memory/CLK
 add wave -position end  sim:/data_memory/WR
 add wave -position end  sim:/data_memory/ADDRESS
