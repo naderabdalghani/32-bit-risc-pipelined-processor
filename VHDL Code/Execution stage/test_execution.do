@@ -3,7 +3,7 @@ add wave -position insertpoint sim:/executionstage/*
 force -freeze sim:/executionstage/ID_EX(112) 1 0
 force -freeze sim:/executionstage/reset 0 0
 force -freeze sim:/executionstage/clock 1 0, 0 {50 ns} -r 100
-
+force -freeze sim:/executionstage/RTIfromWB 0 0
 
 force -freeze sim:/executionstage/ID_EX(110) 0 0
 force -freeze sim:/executionstage/ID_EX(109) 1 0
