@@ -7,7 +7,7 @@ ENTITY MEMORY_STAGE IS
     PORT (
         -------------------------------- INPUT --------------------------------
         CLK, RST : IN STD_LOGIC;
-        EX_MEM_IN : IN STD_LOGIC_VECTOR(127 DOWNTO 0);
+        EX_MEM_IN : IN STD_LOGIC_VECTOR(111 DOWNTO 0);
         INT : IN STD_LOGIC;
         INSTRUCTION_MEMORY_WR : IN STD_LOGIC;
         CURRENT_PC : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
@@ -121,17 +121,18 @@ ARCHITECTURE DATAFLOW OF MEMORY_STAGE IS
     END COMPONENT;
 
 BEGIN
-    SP_INC <= EX_MEM_IN(118);
-    SP_DEC <= EX_MEM_IN(117);
-    MW <= EX_MEM_IN(121);
-    MR <= EX_MEM_IN(122);
-    RTI <= EX_MEM_IN(111);
-    CALL <= EX_MEM_IN(114);
-    P_OUT <= EX_MEM_IN(119);
-    P_IN <= EX_MEM_IN(120);
-    BUFFER_PC <= EX_MEM_IN(37 DOWNTO 6);
+    
+    MR <= EX_MEM_IN(111);
+    MW <= EX_MEM_IN(110);
+    P_IN <= EX_MEM_IN(109);
+    P_OUT <= EX_MEM_IN(108);
+    SP_INC <= EX_MEM_IN(107);
+    SP_DEC <= EX_MEM_IN(106);
+    CALL <= EX_MEM_IN(103);
+    RTI <= EX_MEM_IN(102);
     OPERAND_1 <= EX_MEM_IN(101 DOWNTO 70); -- ALU RESULT
     OPERAND_2 <= EX_MEM_IN(69 DOWNTO 38); -- EFFECTIVE ADDRESS
+    BUFFER_PC <= EX_MEM_IN(37 DOWNTO 6);
     WRITE_REG_1 <= EX_MEM_IN(5 DOWNTO 3);
     WRITE_REG_2 <= EX_MEM_IN(2 DOWNTO 0);
 
@@ -197,9 +198,9 @@ BEGIN
     
     ------------------------------ MEM/WB BUFFER ------------------------------
 
-    MEM_WB_IN(0) <= EX_MEM_IN(116); -- WB1
-    MEM_WB_IN(1) <= EX_MEM_IN(115); -- WB2
-    MEM_WB_IN(2) <= EX_MEM_IN(111); -- RTI
+    MEM_WB_IN(0) <= EX_MEM_IN(105); -- WB1
+    MEM_WB_IN(1) <= EX_MEM_IN(104); -- WB2
+    MEM_WB_IN(2) <= EX_MEM_IN(102); -- RTI
     MEM_WB_IN(34 DOWNTO 3) <= COMPUTED_OPERAND_1; -- OPERAND 1
     MEM_WB_IN(66 DOWNTO 35) <= EX_MEM_IN(69 DOWNTO 38); -- OPERAND 2
     MEM_WB_IN(69 DOWNTO 67) <= EX_MEM_IN(5 DOWNTO 3); -- WRITE_REG_1
