@@ -15,7 +15,7 @@ entity ExecutionStage is
     CCR_out : out STD_LOGIC_VECTOR(3 downto 0);
     wrongDecision : out STD_LOGIC ;
     From_execution_stage : out STD_LOGIC_VECTOR (31 downto 0);
-    EX_MEM_out     : out  STD_LOGIC_VECTOR(114 downto 0)
+    EX_MEM_out     : out  STD_LOGIC_VECTOR(111 downto 0)
     );
 end ExecutionStage;
 
@@ -33,12 +33,12 @@ ARCHITECTURE dataflow OF ExecutionStage IS
  signal CCR_ALU : std_logic_vector (3 downto 0);
  signal CCR_REG : std_logic_vector (3 downto 0);
  signal CCR_reg_input : std_logic_vector (3 downto 0);
- signal BUFF_IN : std_logic_vector (114 downto 0);
+ signal BUFF_IN : std_logic_vector (111 downto 0);
 
 COMPONENT EX_MEM_BUFFER IS
 PORT ( clock, reset,writeEnable : IN STD_LOGIC;
- REG_IN : IN STD_LOGIC_VECTOR (114 downto 0);
- REG_OUT : OUT STD_LOGIC_VECTOR (114 downto 0) );
+ REG_IN : IN STD_LOGIC_VECTOR (111 downto 0);
+ REG_OUT : OUT STD_LOGIC_VECTOR (111 downto 0) );
 END COMPONENT; 
 component ALU is
   generic ( 
@@ -109,7 +109,6 @@ BUFF_IN (69 downto 38) <= result2;
 BUFF_IN (101 downto 70) <= result1;
 BUFF_IN (102) <= ID_EX(111);
 BUFF_IN (111 downto 103) <= ID_EX(122 downto 114);
-BUFF_IN (114 downto 111) <= CCR_REG;
 CCR_out<=CCR_REG;
 -- port mapping
 u1: ALU generic map(32)
