@@ -3,13 +3,16 @@ use IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.numeric_std.all; 
 entity RegFile is port(
 Readdata1,Readdata2:out std_logic_vector(31 downto 0);
+Read_address_1,Read_address_2:out std_logic_vector(2 downto 0) ;
 WRITE_DATA1,WRITE_DATA2:in std_logic_vector(31 downto 0);
  OP_GROUP:in std_logic_vector(1 downto 0);
 OP_CODE:in std_logic_vector(2 downto 0);
 Rdst,Rsrc1,Rsrc2:in std_logic_vector(2 downto 0);
  WRITE_REG1,WRITE_REG2:in std_logic_vector(2 downto 0);
 WB1,WB2:in std_logic;
-Clk,rst:in std_logic 
+Clk,rst:in std_logic ;
+address_3:in std_logic_vector(2 downto 0);
+data_3:out std_logic_vector(2 downto 0)
 );
 end RegFile ;
 architecture Behavioral of RegFile is
@@ -56,7 +59,13 @@ READ_ADDRESS2 <=Rdst when (OP_GROUP ="10" and OP_CODE ="000")-- caseof swap
 
 else Rsrc2;
 
+
 Readdata1 <= Registers(to_integer(unsigned(READ_ADDRESS1)));
 
 Readdata2 <= Registers(to_integer(unsigned(READ_ADDRESS2)));
+
+Read_address_1<=READ_ADDRESS1 ;
+Read_address_2<=READ_ADDRESS2 ;
+
+data_3 <= address_3;
 end Behavioral ;
