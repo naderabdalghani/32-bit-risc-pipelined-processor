@@ -4,7 +4,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use ieee.NUMERIC_STD.all;
 entity ExecutionStage is
     Port (
-    ID_EX     : in  STD_LOGIC_VECTOR(123 downto 0); 
+    ID_EX     : in  STD_LOGIC_VECTOR(129 downto 0); 
     EX_MEM_in     : in  STD_LOGIC_VECTOR(31 downto 0); 
     MEM_WB     : in  STD_LOGIC_VECTOR(31 downto 0); 
     reset,clock : in std_logic ;
