@@ -30,3 +30,4 @@ and (MEM_WB_rdest = R_src2 and NO_OPERANDS='0' and IGNORE_RSRC2='0')
 and (EX_MEM_rdest /=  R_src2 or EX_MEM_WB = '0'))else
 "00" ;
  
+end Behavioral;

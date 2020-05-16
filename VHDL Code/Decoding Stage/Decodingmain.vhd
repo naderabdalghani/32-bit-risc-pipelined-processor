@@ -18,7 +18,6 @@ EX_MEM_rdest,MEM_WB_rdest:in std_logic_vector(2 downto 0);
 TWO_FETCHES_FROM_FETCHING:in std_logic ;
 address_3:in std_logic_vector(2 downto 0);
 data_3:out std_logic_vector(31 downto 0);
-R_DEST_SIGNAL_EX:in std_logic;
 REG0,REG1,REG2,REG3,REG4,REG5,REG6,REG7:out std_logic_vector(31 downto 0);
 WB_1,WB_2:out std_logic 
 
@@ -94,13 +93,13 @@ begin
 
 m1:controlUnit port map(Instruction(31 downto 25),ALU_SELECTORS,TWO_FETCHES,OP_GROUP,BRANCH,MR,MW,P_IN,P_OUT,SP_INC,SP_DEC,WB1,WB2,CALL,RET,ALU_ENABLE,RTI,NO_OPERANDS,IGNORE_RSRC2);
 m2:RegFile port map(ReadData1fromRegfile,ReadData2fromRegfile,Read_Address1_Regfile,Read_Address2_Regfile,WRITE_DATA1,WRITE_DATA2,Instruction(31 downto 30),Instruction(27 downto 25),Instruction(24 downto 22),Instruction(21 downto 19),Instruction(18 downto 16),WRITE_REG1,WRITE_REG2,WB1,WB2,Clk,Rst,address_3,data_3,REG0,REG1,REG2,REG3,REG4,REG5,REG6,REG7);
-m3:forwardunit port map(ForwardA,ForwardB,Dec_output(5 downto 3),Dec_output(2 downto 0),EX_MEM_rdest,MEM_WB_rdest, EX_MEM_WB1,EX_MEM_WB2,MEM_WB_WB1,MEM_WB_WB2,NO_OPERANDS,IGNORE_RSRC2);
-m4:hazarddetection port map(LOAD,Dec_output(122),Read_Address1_regfile,Read_Address2_Regfile,Dec_output(11 downto 9),NO_OPERANDS,IGNORE_RSRC2);
+m3:forwardunit port map(ForwardA,ForwardB,Dec_output(129 downto 127),Dec_output(126 downto 124),EX_MEM_rdest,MEM_WB_rdest, EX_MEM_WB1,EX_MEM_WB2,MEM_WB_WB1,MEM_WB_WB2,NO_OPERANDS,IGNORE_RSRC2);
+m4:hazarddetection port map(LOAD,Dec_output(122),Read_Address1_regfile,Read_Address2_Regfile,Dec_output(5 downto 3),NO_OPERANDS,IGNORE_RSRC2);
 m5:DEC_EX_buffer port map(buffer_output,ReadData1fromRegfile,ReadData2fromRegfile,Instruction(19 downto 0),Instruction(15 downto 0),TWO_FETCHES_FROM_FETCHING,TWO_FETCHES,PredictionSignal,PC,WRITE_REG1,WRITE_REG2,Clk,Rst);
 
 
-Dec_output <= BRANCH&MR&MW&P_IN&P_OUT&SP_INC&SP_DEC&WB1&WB2&CALL&RET&
-ALU_ENABLE&RTI&ALU_SELECTORS&TWO_FETCHES&OP_GROUP&buffer_output&Read_Address1_Regfile&Read_Address2_Regfile;
+Dec_output <= Read_Address1_Regfile&Read_Address2_Regfile&BRANCH&MR&MW&P_IN&P_OUT&SP_INC&SP_DEC&WB1&WB2&CALL&RET&
+ALU_ENABLE&RTI&ALU_SELECTORS&TWO_FETCHES&OP_GROUP&buffer_output;
 WB_1<= WB1;
 WB_2 <=WB2;
 end toplevel_arch;
