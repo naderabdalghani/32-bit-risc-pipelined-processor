@@ -108,7 +108,7 @@ SIGNAL RETURN_INT :  STD_LOGIC;
 SIGNAL MEM_WB_OUT :  STD_LOGIC_VECTOR(72 DOWNTO 0);
 -------------------------------------------------------------------------------------------
 SIGNAL load_use_case :  STD_LOGIC;
-
+SIGNAL load_FROM_DFLIPFLOP :  STD_LOGIC;
 BEGIN 
 
 
@@ -193,7 +193,7 @@ INSTRUCTION_MEMORY_INPUT <= (OTHERS=>'0');
 INSTRUCTION_MEMORY_ADDRESS <=PC_FETCH;
 -------------------------------------------------------------------------------------------
 
-Load_use_case<='1';
+Load_use_case<=NOT(load_FROM_DFLIPFLOP);
 
 -------------------------------------------------------------------------------------------
 --------------------------- PORT MAPPING STAGES -------------------------------------------
@@ -262,6 +262,8 @@ U4 : ENTITY WORK.MEMORY_STAGE   PORT MAP (CLK,RST, MEM_WB_IN ,
  INTERRUPT_1,
  RETURN_INT,
  MEM_WB_OUT,Load_use_case);
+
+ U5 : ENTITY WORK.DFF PORT MAP (LOAD,RST,CLK,load_FROM_DFLIPFLOP);
 -------------------------------------------------------------------------------------------
 
 END DATAFLOW;
