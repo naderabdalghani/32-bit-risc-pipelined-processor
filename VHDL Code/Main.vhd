@@ -107,7 +107,7 @@ SIGNAL INTERRUPT_1 :  STD_LOGIC;
 SIGNAL RETURN_INT :  STD_LOGIC;
 SIGNAL MEM_WB_OUT :  STD_LOGIC_VECTOR(72 DOWNTO 0);
 -------------------------------------------------------------------------------------------
-
+SIGNAL load_use_case :  STD_LOGIC;
 
 BEGIN 
 
@@ -193,6 +193,7 @@ INSTRUCTION_MEMORY_INPUT <= (OTHERS=>'0');
 INSTRUCTION_MEMORY_ADDRESS <=PC_FETCH;
 -------------------------------------------------------------------------------------------
 
+Load_use_case<='1';
 
 -------------------------------------------------------------------------------------------
 --------------------------- PORT MAPPING STAGES -------------------------------------------
@@ -228,7 +229,7 @@ U1 : ENTITY WORK.FETCHING_STAGE   PORT MAP ( DATA_EXE_STAGE, DATA_DATA_MEMORY
  Clk,Rst,
  Instruction,
  EX_MEM_rdest,MEM_WB_rdest,
- EX_MEM_WB1,EX_MEM_WB2,MEM_WB_WB1,MEM_WB_WB2,TWO_FETCHES_FROM_FETCHING,address_3,data_3,R0,R1,R2,R3,R4,R5,R6,R7,WB_1,WB_2);
+ EX_MEM_WB1,EX_MEM_WB2,MEM_WB_WB1,MEM_WB_WB2,TWO_FETCHES_FROM_FETCHING,address_3,data_3,R0,R1,R2,R3,R4,R5,R6,R7,WB_1,WB_2,Load_use_case);
 
 
 
@@ -243,7 +244,7 @@ CCRfromWB,
 CCR_out,
 wrongDecision,
 From_execution_stage,
-EX_MEM_out);
+EX_MEM_out,Load_use_case);
 
 
 
@@ -260,7 +261,7 @@ U4 : ENTITY WORK.MEMORY_STAGE   PORT MAP (CLK,RST, MEM_WB_IN ,
  OUT_PORT,
  INTERRUPT_1,
  RETURN_INT,
- MEM_WB_OUT);
+ MEM_WB_OUT,Load_use_case);
 -------------------------------------------------------------------------------------------
 
 END DATAFLOW;
