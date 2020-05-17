@@ -1,117 +1,123 @@
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
-use ieee.NUMERIC_STD.all;
-entity ExecutionStage is
-    Port (
-    ID_EX     : in  STD_LOGIC_VECTOR(123 downto 0); 
-    EX_MEM_in     : in  STD_LOGIC_VECTOR(31 downto 0); 
-    MEM_WB     : in  STD_LOGIC_VECTOR(31 downto 0); 
-    reset,clock : in std_logic ;
-    SelForwardingUnit1  : in  STD_LOGIC_VECTOR(1 downto 0); 
-    SelForwardingUnit2  : in  STD_LOGIC_VECTOR(1 downto 0); 
-    RTIfromWB : in std_logic ;
-    CCRfromWB : in STD_LOGIC_VECTOR(3 downto 0);
-    CCR_out : out STD_LOGIC_VECTOR(3 downto 0);
-    wrongDecision : out STD_LOGIC ;
-    From_execution_stage : out STD_LOGIC_VECTOR (31 downto 0);
-    EX_MEM_out     : out  STD_LOGIC_VECTOR(127 downto 0)
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.STD_LOGIC_UNSIGNED.ALL;
+USE IEEE.NUMERIC_STD.ALL;
+ENTITY EXECUTIONSTAGE IS
+    PORT (
+    ID_EX     : IN  STD_LOGIC_VECTOR(129 DOWNTO 0); 
+    EX_MEM_IN     : IN  STD_LOGIC_VECTOR(31 DOWNTO 0); 
+    MEM_WB     : IN  STD_LOGIC_VECTOR(31 DOWNTO 0); 
+    RESET,CLOCK : IN STD_LOGIC ;
+    SELFORWARDINGUNIT1  : IN  STD_LOGIC_VECTOR(1 DOWNTO 0); 
+    SELFORWARDINGUNIT2  : IN  STD_LOGIC_VECTOR(1 DOWNTO 0); 
+    RTIFROMWB : IN STD_LOGIC ;
+    CCRFROMWB : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+    CCR_OUT : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+    WRONGDECISION : OUT STD_LOGIC ;
+    FROM_EXECUTION_STAGE : OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
+    EX_MEM_OUT     : OUT  STD_LOGIC_VECTOR(112 DOWNTO 0);
+    BufferWriteEnable : IN STD_LOGIC 
     );
-end ExecutionStage;
+END EXECUTIONSTAGE;
 
-ARCHITECTURE dataflow OF ExecutionStage IS
- signal check1 : STD_LOGIC;
- signal check2 : STD_LOGIC;
- signal check3 : STD_LOGIC;
- signal AluEnable : STD_LOGIC;
- signal SelAlu   :  STD_LOGIC_VECTOR(3 downto 0);
- signal result1 : std_logic_vector (31 downto 0);
- signal result2 : std_logic_vector (31 downto 0);
- signal operand_1 : std_logic_vector (31 downto 0);
- signal operand_2 : std_logic_vector (31 downto 0);
- signal CCR_ALU : std_logic_vector (3 downto 0);
- signal CCR_REG : std_logic_vector (3 downto 0);
- signal CCR_reg_input : std_logic_vector (3 downto 0);
- signal BUFF_IN : std_logic_vector (127 downto 0);
+ARCHITECTURE DATAFLOW OF EXECUTIONSTAGE IS
+ SIGNAL CHECK1 : STD_LOGIC;
+ SIGNAL CHECK2 : STD_LOGIC;
+ SIGNAL CHECK3 : STD_LOGIC;
+ SIGNAL CHECK4 : STD_LOGIC;
+ SIGNAL CCR_ENABLE : STD_LOGIC;
+ SIGNAL ALUENABLE : STD_LOGIC;
+ SIGNAL SELALU   :  STD_LOGIC_VECTOR(3 DOWNTO 0);
+ SIGNAL RESULT1 : STD_LOGIC_VECTOR (31 DOWNTO 0);
+ SIGNAL RESULT2 : STD_LOGIC_VECTOR (31 DOWNTO 0);
+ SIGNAL OPERAND_1 : STD_LOGIC_VECTOR (31 DOWNTO 0);
+ SIGNAL OPERAND_2 : STD_LOGIC_VECTOR (31 DOWNTO 0);
+ SIGNAL CCR_ALU : STD_LOGIC_VECTOR (3 DOWNTO 0);
+ SIGNAL CCR_REG : STD_LOGIC_VECTOR (3 DOWNTO 0);
+ SIGNAL CCR_REG_INPUT : STD_LOGIC_VECTOR (3 DOWNTO 0);
+ SIGNAL BUFF_IN : STD_LOGIC_VECTOR (112 DOWNTO 0);
 
 COMPONENT EX_MEM_BUFFER IS
-PORT ( clock, reset,writeEnable : IN STD_LOGIC;
- REG_IN : IN STD_LOGIC_VECTOR (127 downto 0);
- REG_OUT : OUT STD_LOGIC_VECTOR (127 downto 0) );
+PORT ( CLOCK, RESET,WRITEENABLE : IN STD_LOGIC;
+ REG_IN : IN STD_LOGIC_VECTOR (112 DOWNTO 0);
+ REG_OUT : OUT STD_LOGIC_VECTOR (112 DOWNTO 0) );
 END COMPONENT; 
-component ALU is
-  generic ( 
-     N: integer := 32  
+COMPONENT ALU IS
+  GENERIC ( 
+     N: INTEGER := 32  
     );
   
-    Port (
-    A, B     : in  STD_LOGIC_VECTOR(N-1 downto 0); 
-    Enable,reset : in std_logic ;
-    Sel  : in  STD_LOGIC_VECTOR(3 downto 0); 
-    Res   : out  STD_LOGIC_VECTOR(N-1 downto 0);
-    CCR : out STD_LOGIC_VECTOR (3 downto 0)
+    PORT (
+    A, B     : IN  STD_LOGIC_VECTOR(N-1 DOWNTO 0); 
+    ENABLE,RESET : IN STD_LOGIC ;
+    SEL  : IN  STD_LOGIC_VECTOR(3 DOWNTO 0); 
+    RES   : OUT  STD_LOGIC_VECTOR(N-1 DOWNTO 0);
+    CCR : OUT STD_LOGIC_VECTOR (3 DOWNTO 0)
     );
-end component; 
+END COMPONENT; 
 
-component ConditionCodeRegister IS
- PORT ( clock, reset : IN STD_LOGIC;
- CCRIN : IN STD_LOGIC_VECTOR (3 downto 0);
- CCROUT : OUT STD_LOGIC_VECTOR (3 downto 0) );
-END component; 
+COMPONENT CONDITIONCODEREGISTER IS
+ PORT ( CLOCK, RESET,WRITEENABLE : IN STD_LOGIC;
+ CCRIN : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
+ CCROUT : OUT STD_LOGIC_VECTOR (3 DOWNTO 0) );
+END COMPONENT; 
 
 
  BEGIN
-AluEnable<= ID_EX(112);
-SelAlu<= ID_EX(110 downto 107);
-with SelForwardingUnit1 select operand_1 <= -- MUX 1 --
-	MEM_WB when "00",
-	EX_MEM_in when "01",
-	ID_EX(101 downto 70) when "10",
-	ID_EX(101 downto 70) when others;
+ CCR_ENABLE<= ALUENABLE OR RTIFROMWB;
+ALUENABLE<= ID_EX(112);
+SELALU<= ID_EX(110 DOWNTO 107);
+WITH SELFORWARDINGUNIT1 SELECT OPERAND_1 <= -- MUX 1 --
+	MEM_WB WHEN "10",
+	EX_MEM_IN WHEN "01",
+	ID_EX(101 DOWNTO 70) WHEN "00",
+	ID_EX(101 DOWNTO 70) WHEN OTHERS;
 
 
-with SelForwardingUnit2 select operand_2 <= -- MUX 2 --
-	MEM_WB when "00",
-	EX_MEM_in when "01",
-	ID_EX(69 downto 38) when "10",
-	ID_EX(69 downto 38) when others;
+WITH SELFORWARDINGUNIT2 SELECT OPERAND_2 <= -- MUX 2 --
+	MEM_WB WHEN "10",
+	EX_MEM_IN WHEN "01",
+	ID_EX(69 DOWNTO 38) WHEN "00",
+	ID_EX(69 DOWNTO 38) WHEN OTHERS;
 
-with SelAlu select result2 <= -- MUX 3 -- handling swap by passing B in alu and operand one get into place of operand 2 in buffer
-        operand_1 when "0011",
-        operand_2 when others;
-
-
-
-check1<= ( ID_EX (102) xor CCR_REG(0) ) and ID_EX (123) ;
-check2<= not(ID_EX (102)) and not(ID_EX (123)) ;
-check3<= check1 or check2;
-with check3 select wrongDecision <=
-	'1' when '1',
-        '0' when others;
-
-with ID_EX (102) select From_execution_stage <=
-	operand_1 when '0',
-	ID_EX(37 downto 6) when others;
+WITH SELALU SELECT RESULT2 <= -- MUX 3 -- HANDLING SWAP BY PASSING B IN ALU AND OPERAND ONE GET INTO PLACE OF OPERAND 2 IN BUFFER
+        OPERAND_1 WHEN "0011",
+        OPERAND_2 WHEN OTHERS;
 
 
---handling rti from WB
-with RTIfromWB select CCR_reg_input <=
-	CCRfromWB when '1',
-        CCR_ALU when others;
 
--- out 
-BUFF_IN (2 downto 0) <= ID_EX(2 downto 0);
-BUFF_IN (5 downto 3) <= ID_EX(5 downto 3);
-BUFF_IN (37 downto 6) <= ID_EX(37 downto 6);
-BUFF_IN (69 downto 38) <= result2;
-BUFF_IN (101 downto 70) <= result1;
-BUFF_IN (123 downto 102) <= ID_EX(123 downto 102);
-BUFF_IN (127 downto 124) <= CCR_REG;
-CCR_out<=CCR_REG;
--- port mapping
-u1: ALU generic map(32)
-            port map(operand_1, operand_2, AluEnable,reset, SelAlu,result1,CCR_ALU);
-u2: ConditionCodeRegister  port map(clock, reset, CCR_reg_input,CCR_REG);
-u3: EX_MEM_BUFFER  port map(clock, reset,'1', BUFF_IN,EX_MEM_OUT);
+CHECK1<= ( ID_EX (102) XOR CCR_REG(0) ) AND ID_EX (123) ;
+CHECK2<= (NOT(ID_EX (102)) AND NOT(ID_EX (123))) AND CHECK4;
+CHECK4<= (NOT (ID_EX (104)) AND ID_EX (103)) AND (NOT (ID_EX (113) OR ID_EX (111)));
+CHECK3<= CHECK1 OR CHECK2;
+WITH CHECK3 SELECT WRONGDECISION <=
+	'1' WHEN '1',
+        '0' WHEN OTHERS;
 
-END dataflow;
+WITH ID_EX (102) SELECT FROM_EXECUTION_STAGE <=
+	OPERAND_1 WHEN '0',
+	ID_EX(37 DOWNTO 6) WHEN OTHERS;
+
+
+--HANDLING RTI FROM WB
+WITH RTIFROMWB SELECT CCR_REG_INPUT <=
+	CCRFROMWB WHEN '1',
+        CCR_ALU WHEN OTHERS;
+
+-- OUT 
+BUFF_IN (2 DOWNTO 0) <= ID_EX(2 DOWNTO 0);
+BUFF_IN (5 DOWNTO 3) <= ID_EX(5 DOWNTO 3);
+BUFF_IN (37 DOWNTO 6) <= ID_EX(37 DOWNTO 6);
+BUFF_IN (69 DOWNTO 38) <= RESULT2;
+BUFF_IN (101 DOWNTO 70) <= RESULT1;
+BUFF_IN (102) <= ID_EX(111);
+BUFF_IN (111 DOWNTO 103) <= ID_EX(122 DOWNTO 114);
+BUFF_IN(112)<= ID_EX(113);
+CCR_OUT<=CCR_REG;
+-- PORT MAPPING
+U1: ALU GENERIC MAP(32)
+            PORT MAP(OPERAND_1, OPERAND_2, ALUENABLE,RESET, SELALU,RESULT1,CCR_ALU);
+U2: CONDITIONCODEREGISTER  PORT MAP(CLOCK, RESET,CCR_ENABLE ,CCR_REG_INPUT,CCR_REG);
+U3: EX_MEM_BUFFER  PORT MAP(CLOCK, RESET,BufferWriteEnable, BUFF_IN,EX_MEM_OUT);
+
+END DATAFLOW;

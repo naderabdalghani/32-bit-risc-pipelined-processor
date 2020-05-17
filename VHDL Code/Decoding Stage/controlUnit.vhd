@@ -5,7 +5,7 @@ Instruction:in std_logic_vector(6 downto 0);
  ALU_SELECTORS:out std_logic_vector(3 downto 0);
  TWO_FETCHES,OP_GROUP:out std_logic_vector(1 downto 0);
  BRANCH,MR,MW,P_IN,P_OUT,SP_INC,SP_DEC,WB1,WB2,CALL,RET,
-ALU_ENABLE,RTI:out std_logic) ;
+ALU_ENABLE,RTI,NO_OPERANDS,IGNORE_RSRC2:out std_logic) ;
 end controlUnit ;
 
 architecture Behavioral of controlUnit is
@@ -29,7 +29,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='0';
 RTI<='0';
-
+NO_OPERANDS <='1';
+IGNORE_RSRC2 <='1';
 when
 "0000001" => --not
 BRANCH<='0';
@@ -48,7 +49,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='1';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='1';
 when
  "0000010" => --inc
 BRANCH<='0';
@@ -67,7 +69,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='1';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='1';
 when "0000011" => --dec
 BRANCH<='0';
 ALU_SELECTORS<="0010";
@@ -85,7 +88,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='1';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='1';
 when "0000100" => --out
 BRANCH<='0';
 MR<='0';
@@ -102,6 +106,9 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='0';
 RTI<='0';
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='1';
+
 when
 "0000101" => --in
 BRANCH<='0';
@@ -119,7 +126,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='0';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='1';
 when "0100000" => --jz
 BRANCH<='1';
 MR<='0';
@@ -136,7 +144,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='0';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='1';
 when "0100001" => --jmp
 BRANCH<='0';
 MR<='0';
@@ -153,6 +162,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='0';
 RTI<='0';
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='1';
 when "0100010" => --call
 BRANCH<='0';
 MR<='0';
@@ -169,6 +180,8 @@ CALL<='1';
 RET<='0';
 ALU_ENABLE<='0';
 RTI<='0';
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='1';
 when "0100111" => --ret
 BRANCH<='0';
 MR<='1';
@@ -185,6 +198,8 @@ CALL<='0';
 RET<='1';
 ALU_ENABLE<='0';
 RTI<='0';
+NO_OPERANDS <='1';
+IGNORE_RSRC2 <='1';
 when "0100101" => --rti
 BRANCH<='0';
 MR<='1';
@@ -201,7 +216,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='0';
 RTI<='1';
-
+NO_OPERANDS <='1';
+IGNORE_RSRC2 <='1';
 when "1000000" => --swap
 BRANCH<='0';
 ALU_SELECTORS<="0011";
@@ -219,7 +235,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='1';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='0';
 when "1000001" => --add
 BRANCH<='0';
 ALU_SELECTORS<="0100";
@@ -237,7 +254,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='1';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='0';
 when "1000010" => --or
  BRANCH<='0';
 ALU_SELECTORS<="1000";
@@ -255,7 +273,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='1';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='0';
 when "1000011" => --sub
  BRANCH<='0';
 ALU_SELECTORS<="0110";
@@ -273,7 +292,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='1';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='0';
 when "1000100" => --and
 BRANCH<='0';
 ALU_SELECTORS<="0111";
@@ -291,7 +311,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='1';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='0';
 when "1001101" => --iadd
  BRANCH<='0';
 ALU_SELECTORS<="0101";
@@ -309,7 +330,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='1';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='1';
 when "1001110" => --shl
 BRANCH<='0';
 ALU_SELECTORS<="1001";
@@ -327,7 +349,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='1';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='1';
 when "1001111" => --shr
 BRANCH<='0';
 ALU_SELECTORS<="1011";
@@ -345,7 +368,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='1';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='1';
 when "1100000" => --push
 BRANCH<='0';
 MR<='0';
@@ -362,7 +386,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='0';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='1';
 when "1100001" => --pop
  BRANCH<='0';
 MR<='1';
@@ -379,7 +404,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='0';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='1';
 when "1101010" => --ldm
 BRANCH<='0';
 MR<='1';
@@ -396,7 +422,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='0';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='1';
 when "1110101" => --ldd
  BRANCH<='0';
 MR<='1';
@@ -413,7 +440,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='0';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='1';
 when "1110110" => --std
 BRANCH<='0';
 MR<='0';
@@ -430,7 +458,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='0';
 RTI<='0';
-
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='1';
 when others =>
 BRANCH<='0';
 ALU_SELECTORS<="0000";
@@ -448,6 +477,8 @@ CALL<='0';
 RET<='0';
 ALU_ENABLE<='0';
 RTI<='0';
+NO_OPERANDS <='0';
+IGNORE_RSRC2 <='0';
 end case;
 end process ;
 end Behavioral;
