@@ -46,7 +46,8 @@ begin
 elsif(rising_edge(clk)) then
 if(WB1 ='1')then
 Registers(to_integer(unsigned(WRITE_REG1))) <= WRITE_DATA1;
-elsif(WB2 ='1') then
+end if ;
+if(WB2 ='1') then
 Registers(to_integer(unsigned(WRITE_REG2))) <= WRITE_DATA2;
 end if ;
 end if ;
