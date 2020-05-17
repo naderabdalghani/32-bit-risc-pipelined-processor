@@ -33,13 +33,15 @@ else Readdata;
 
  process(clk,TWO_FETCHES_FROM_FETCHING,Rst) 
  begin
-if(TWO_FETCHES_FROM_FETCHING= '1' or Rst='1') then
+if(TWO_FETCHES_FROM_FETCHING= '1' or Rst='1'  ) then
 buffer_output <= (others => '0');
 
-elsif(rising_edge(clk) and BufferWriteEnable ='1' ) then
-
-buffer_output <= BRANCH & MR & MW & P_IN & P_OUT & SP_INC &SP_DEC  & WB1 & WB2 & CALL & RET & ALU_ENABLE & RTI & ALU_SELECTORS & TWO_FETCHES & OP_GROUP & PREDICTION_SIGNAL & Readdata1 & Readdata2 & PC & WRITE_REG1 & WRITE_REG2;
-
+elsif(rising_edge(clk) ) then
+if ( BufferWriteEnable ='1') then
+buffer_output <= (others => '0');    
+else
+buffer_output <=  BRANCH & MR & MW & P_IN & P_OUT & SP_INC &SP_DEC  & WB1 & WB2 & CALL & RET & ALU_ENABLE & RTI & ALU_SELECTORS & TWO_FETCHES & OP_GROUP & PREDICTION_SIGNAL & Readdata1 & Readdata2 & PC & WRITE_REG1 & WRITE_REG2;
+end if;
 end if;
 
 end process ;
