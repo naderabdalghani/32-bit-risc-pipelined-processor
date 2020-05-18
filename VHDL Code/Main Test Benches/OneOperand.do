@@ -15,17 +15,27 @@ add wave -position end  sim:/main/PC
 add wave -position end  sim:/main/SP
 add wave -position end  sim:/main/OUT_PORT
 add wave -position end  sim:/main/FLAGREG
-add wave -position end  sim:/main/FE_ID
-add wave -position end  sim:/main/ID_EX
-add wave -position end  sim:/main/load_use_case
-add wave -position end  sim:/main/ForwardA
-add wave -position end  sim:/main/ForwardB
-add wave -position end  sim:/main/LOAD
-add wave -position 18  sim:/main/EX_MEM_out
-add wave -position 19  sim:/main/MEM_WB_OUT
-add wave -position 19  sim:/main/MEM_WB
 force -freeze sim:/main/RST 1 0
 force -freeze sim:/main/CLK 1 0, 0 {50 ns} -r 100
 force -freeze sim:/main/INT 0 0
 run
 force -freeze sim:/main/RST 0 0
+run
+run
+run
+run
+run
+run
+force -freeze sim:/main/IN_PORT 5 0
+run
+force -freeze sim:/main/IN_PORT 10 0
+run
+force -freeze sim:/main/IN_PORT 0 0
+run
+run
+run
+run
+run
+run
+run
+run
