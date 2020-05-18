@@ -7,7 +7,6 @@ Readdata1:in std_logic_vector(31 downto 0);
 Readdata:in  std_logic_vector(31 downto 0);
 EA: in  std_logic_vector(19 downto 0);
 IMM:in std_logic_vector(15 downto 0);
-TWO_FETCHES_FROM_FETCHING:in std_logic ;
 TWO_FETCHES:in std_logic_vector(1 downto 0);
 PREDICTION_SIGNAL:in std_logic;
 PC:in  std_logic_vector(31 downto 0);
@@ -26,13 +25,13 @@ signal Readdata2:std_logic_vector(31 downto 0);
 begin
 
 Readdata2 <= Readdata when TWO_FETCHES ="00"
-else "000000000000" &EA when TWO_FETCHES ="01"
-else std_logic_vector(resize(signed(IMM), Readdata2'length))when TWO_FETCHES ="10"
+else "000000000000" &EA when TWO_FETCHES ="10"
+else std_logic_vector(resize(signed(IMM), Readdata2'length))when TWO_FETCHES ="01"
 else Readdata; 
 
- process(clk,TWO_FETCHES_FROM_FETCHING,Rst) 
+ process(clk,Rst) 
  begin
-if(TWO_FETCHES_FROM_FETCHING= '1' or Rst='1'  ) then
+if(Rst='1'  ) then
 buffer_output <= (others => '0');
 
 elsif(rising_edge(clk) ) then

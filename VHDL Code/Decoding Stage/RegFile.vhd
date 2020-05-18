@@ -43,7 +43,7 @@ begin
                 Registers(7) <= "00000000000000000000000000000000";
 		
 
-elsif(rising_edge(clk)) then
+elsif(falling_edge(clk)) then
 if(WB1 ='1')then
 Registers(to_integer(unsigned(WRITE_REG1))) <= WRITE_DATA1;
 end if ;

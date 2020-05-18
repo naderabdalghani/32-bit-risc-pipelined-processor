@@ -56,7 +56,7 @@ SIGNAL INT_TO_MEM_STAGE:    STD_LOGIC;
 --------------------------- DECODING STAGE SIGNALS ----------------------------------------
 -------------------------------------------------------------------------------------------
 SIGNAL PredictionSignal :  std_logic;
-SIGNAL Dec_output: std_logic_vector(129 downto 0);
+SIGNAL Dec_output: std_logic_vector(131 downto 0);
 SIGNAL PC_DEC: std_logic_vector(31 downto 0);
 SIGNAL WRITE_REG1,WRITE_REG2: std_logic_vector(2 downto 0);
 SIGNAL ForwardA,ForwardB: std_logic_vector(1 downto 0);
@@ -172,7 +172,7 @@ address_3<=BRANCHING_REG;
 -------------------------------------------------------------------------------------------
 --------------------------- SETTING EXECUTION SIGNALS -------------------------------------
 -------------------------------------------------------------------------------------------
-ID_EX <=Dec_output; 
+ID_EX <=Dec_output(129 DOWNTO 0); 
 EX_MEM_IN <=EX_MEM_out(101 downto 70); 
 MEM_WB <=MEM_WB_OUT(34 DOWNTO 3); 
 SELFORWARDINGUNIT1 <=ForwardA; 

@@ -49,7 +49,8 @@ Instruction:in std_logic_vector(6 downto 0);
  TWO_FETCHES,OP_GROUP:out std_logic_vector(1 downto 0);
  BRANCH,MR,MW,P_IN,P_OUT,SP_INC,SP_DEC,WB1,WB2,CALL,RET,
 ALU_ENABLE,RTI,NO_OPERANDS,IGNORE_RSRC2:out std_logic;
-BufferWriteEnable : in  std_logic) ;
+BufferWriteEnable : in  std_logic;
+TWO_FETCHES_FROM_FETCHING:in std_logic ) ;
 end component ;
 
 component forwardunit is port(
@@ -64,6 +65,7 @@ component hazarddetection is port (
 LOAD:out std_logic;
 DEC_EX_MemRead:in std_logic;
 F_DEC_src1,F_DEC_src2,DEC_EX_dest:in std_logic_vector(2 downto 0) ;
+OP_CODE: IN STD_LOGIC_VECTOR(6 DOWNTO 0);
 NO_OPERANDS,IGNORE_RSRC2:in std_logic
 );
 end component ;
@@ -74,7 +76,6 @@ Readdata1:in std_logic_vector(31 downto 0);
 Readdata:in  std_logic_vector(31 downto 0);
 EA: in  std_logic_vector(19 downto 0);
 IMM:in std_logic_vector(15 downto 0);
-TWO_FETCHES_FROM_FETCHING:in std_logic ;
 TWO_FETCHES:in std_logic_vector(1 downto 0);
 PREDICTION_SIGNAL:in std_logic;
 PC:in  std_logic_vector(31 downto 0);
@@ -96,11 +97,11 @@ signal ALU_SELECTORS:std_logic_vector(3 downto 0);
 signal TWO_FETCHES,OP_GROUP:std_logic_vector(1 downto 0);
 begin
 
-m1:controlUnit port map(Instruction(31 downto 25),ALU_SELECTORS,TWO_FETCHES,OP_GROUP,BRANCH,MR,MW,P_IN,P_OUT,SP_INC,SP_DEC,WB1,WB2,CALL,RET,ALU_ENABLE,RTI,NO_OPERANDS,IGNORE_RSRC2,load_use);
+m1:controlUnit port map(Instruction(31 downto 25),ALU_SELECTORS,TWO_FETCHES,OP_GROUP,BRANCH,MR,MW,P_IN,P_OUT,SP_INC,SP_DEC,WB1,WB2,CALL,RET,ALU_ENABLE,RTI,NO_OPERANDS,IGNORE_RSRC2,load_use,TWO_FETCHES_FROM_FETCHING);
 m2:RegFile port map(ReadData1fromRegfile,ReadData2fromRegfile,Read_Address1_Regfile,Read_Address2_Regfile,WRITE_DATA1,WRITE_DATA2,Instruction(31 downto 30),Instruction(27 downto 25),Instruction(24 downto 22),Instruction(21 downto 19),Instruction(18 downto 16),WRITE_REG1,WRITE_REG2,MEM_WB_WB1,MEM_WB_WB2,Clk,Rst,address_3,data_3,REG0,REG1,REG2,REG3,REG4,REG5,REG6,REG7);
-m3:forwardunit port map(ForwardA,ForwardB,Dec_output(5 downto 3),Dec_output(2 downto 0),EX_MEM_rdest,MEM_WB_rdest, EX_MEM_WB1,EX_MEM_WB2,MEM_WB_WB1,MEM_WB_WB2,NO_OPERANDS,IGNORE_RSRC2);
-m4:hazarddetection port map(load_use,Dec_output(122),Read_Address1_regfile,Read_Address2_Regfile,Dec_output(5 downto 3),Dec_output(125),Dec_output(124));
-m5:DEC_EX_buffer port map(buffer_output,ReadData1fromRegfile,ReadData2fromRegfile,Instruction(19 downto 0),Instruction(15 downto 0),TWO_FETCHES_FROM_FETCHING,TWO_FETCHES,PredictionSignal,PC,Read_Address1_Regfile,Read_Address2_Regfile,Clk,Rst,BRANCH,MR,MW,P_IN,P_OUT,SP_INC,SP_DEC,CALL,WB1,WB2,RET,ALU_ENABLE,RTI,NO_OPERANDS,IGNORE_RSRC2,ALU_SELECTORS,OP_GROUP);
+m3:forwardunit port map(ForwardA,ForwardB,Dec_output(5 downto 3),Dec_output(2 downto 0),EX_MEM_rdest,MEM_WB_rdest, EX_MEM_WB1,EX_MEM_WB2,MEM_WB_WB1,MEM_WB_WB2,Dec_output(125),Dec_output(124));
+m4:hazarddetection port map(load_use,Dec_output(122),Read_Address1_regfile,Read_Address2_Regfile,Dec_output(5 downto 3),Instruction(31 DOWNTO 25),NO_OPERANDS,IGNORE_RSRC2);
+m5:DEC_EX_buffer port map(buffer_output,ReadData1fromRegfile,ReadData2fromRegfile,Instruction(19 downto 0),Instruction(15 downto 0),TWO_FETCHES,PredictionSignal,PC,Instruction(24 downto 22),Instruction(21 downto 19),Clk,Rst,BRANCH,MR,MW,P_IN,P_OUT,SP_INC,SP_DEC,CALL,WB1,WB2,RET,ALU_ENABLE,RTI,NO_OPERANDS,IGNORE_RSRC2,ALU_SELECTORS,OP_GROUP);
 
 LOAD<=load_use;
 Dec_output <= Read_Address1_Regfile&Read_Address2_Regfile&buffer_output;
