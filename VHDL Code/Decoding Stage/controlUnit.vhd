@@ -29,8 +29,8 @@ if BufferWriteEnable='1' then
     RET<='0';
     ALU_ENABLE<='0';
     RTI<='0';
-    NO_OPERANDS <='0';
-    IGNORE_RSRC2 <='0';
+    NO_OPERANDS <='1';
+    IGNORE_RSRC2 <='1';
 else
 case (Instruction) is
 when "0000000" => --nop

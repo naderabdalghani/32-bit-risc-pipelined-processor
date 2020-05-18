@@ -2,7 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.numeric_std.all; 
 entity DEC_EX_buffer is port(
-buffer_output :out std_logic_vector(123 downto 0);
+buffer_output :out std_logic_vector(125 downto 0);
 Readdata1:in std_logic_vector(31 downto 0);
 Readdata:in  std_logic_vector(31 downto 0);
 EA: in  std_logic_vector(19 downto 0);
@@ -36,7 +36,7 @@ if(TWO_FETCHES_FROM_FETCHING= '1' or Rst='1'  ) then
 buffer_output <= (others => '0');
 
 elsif(rising_edge(clk) ) then
-buffer_output <=  BRANCH & MR & MW & P_IN & P_OUT & SP_INC &SP_DEC  & WB1 & WB2 & CALL & RET & ALU_ENABLE & RTI & ALU_SELECTORS & TWO_FETCHES & OP_GROUP & PREDICTION_SIGNAL & Readdata1 & Readdata2 & PC & WRITE_REG1 & WRITE_REG2;
+buffer_output <=  NO_OPERANDS & IGNORE_RSRC2 & BRANCH & MR & MW & P_IN & P_OUT & SP_INC &SP_DEC  & WB1 & WB2 & CALL & RET & ALU_ENABLE & RTI & ALU_SELECTORS & TWO_FETCHES & OP_GROUP & PREDICTION_SIGNAL & Readdata1 & Readdata2 & PC & WRITE_REG1 & WRITE_REG2;
 end if;
 
 
