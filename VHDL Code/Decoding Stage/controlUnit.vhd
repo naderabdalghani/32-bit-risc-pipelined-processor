@@ -5,13 +5,33 @@ Instruction:in std_logic_vector(6 downto 0);
  ALU_SELECTORS:out std_logic_vector(3 downto 0);
  TWO_FETCHES,OP_GROUP:out std_logic_vector(1 downto 0);
  BRANCH,MR,MW,P_IN,P_OUT,SP_INC,SP_DEC,WB1,WB2,CALL,RET,
-ALU_ENABLE,RTI,NO_OPERANDS,IGNORE_RSRC2:out std_logic) ;
+ALU_ENABLE,RTI,NO_OPERANDS,IGNORE_RSRC2:out std_logic;
+BufferWriteEnable : in std_logic) ;
 end controlUnit ;
 
 architecture Behavioral of controlUnit is
 begin
-process(Instruction)
+process(Instruction,BufferWriteEnable)
 begin
+if BufferWriteEnable='1' then 
+    BRANCH <='0';
+    MR <='0';
+    MW <='0';
+    P_IN<='0';
+    P_OUT<='0';
+    SP_INC<='0';
+    SP_DEC<='0';
+    TWO_FETCHES<="00";
+    WB1<='0';
+    WB2<='0';
+    OP_GROUP<="00";
+    CALL<='0';
+    RET<='0';
+    ALU_ENABLE<='0';
+    RTI<='0';
+    NO_OPERANDS <='0';
+    IGNORE_RSRC2 <='0';
+else
 case (Instruction) is
 when "0000000" => --nop
 BRANCH <='0';
@@ -480,5 +500,6 @@ RTI<='0';
 NO_OPERANDS <='0';
 IGNORE_RSRC2 <='0';
 end case;
+end if ;
 end process ;
 end Behavioral;

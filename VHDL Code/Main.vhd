@@ -193,7 +193,7 @@ INSTRUCTION_MEMORY_INPUT <= (OTHERS=>'0');
 INSTRUCTION_MEMORY_ADDRESS <=PC_FETCH;
 -------------------------------------------------------------------------------------------
 
-Load_use_case<=NOT(load_FROM_DFLIPFLOP);
+Load_use_case<=LOAD;
 
 -------------------------------------------------------------------------------------------
 --------------------------- PORT MAPPING STAGES -------------------------------------------
@@ -244,7 +244,7 @@ CCRfromWB,
 CCR_out,
 wrongDecision,
 From_execution_stage,
-EX_MEM_out,Load_use_case);
+EX_MEM_out,'1');
 
 
 
@@ -261,7 +261,7 @@ U4 : ENTITY WORK.MEMORY_STAGE   PORT MAP (CLK,RST, MEM_WB_IN ,
  OUT_PORT,
  INTERRUPT_1,
  RETURN_INT,
- MEM_WB_OUT,Load_use_case);
+ MEM_WB_OUT,'1');
 
  U5 : ENTITY WORK.DFF PORT MAP (LOAD,RST,CLK,load_FROM_DFLIPFLOP);
 -------------------------------------------------------------------------------------------

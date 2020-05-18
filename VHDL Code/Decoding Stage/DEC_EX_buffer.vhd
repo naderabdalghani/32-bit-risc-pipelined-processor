@@ -17,8 +17,7 @@ clk:in std_logic;
 Rst:in std_logic;
 BRANCH,MR,MW,P_IN,P_OUT,SP_INC,SP_DEC,CALL,WB1,WB2,RET,ALU_ENABLE,RTI,NO_OPERANDS,IGNORE_RSRC2: IN std_logic;
 ALU_SELECTORS: IN std_logic_vector(3 downto 0);
-OP_GROUP: IN std_logic_vector(1 downto 0);
-BufferWriteEnable : IN STD_LOGIC 
+OP_GROUP: IN std_logic_vector(1 downto 0)
 );
 end DEC_EX_buffer;
 architecture Behavioral of DEC_EX_buffer is
@@ -33,14 +32,13 @@ else Readdata;
 
  process(clk,TWO_FETCHES_FROM_FETCHING,Rst) 
  begin
-if(TWO_FETCHES_FROM_FETCHING= '1' or Rst='1') then
+if(TWO_FETCHES_FROM_FETCHING= '1' or Rst='1'  ) then
 buffer_output <= (others => '0');
 
-elsif(rising_edge(clk) and BufferWriteEnable ='1' ) then
-
-buffer_output <= BRANCH & MR & MW & P_IN & P_OUT & SP_INC &SP_DEC  & WB1 & WB2 & CALL & RET & ALU_ENABLE & RTI & ALU_SELECTORS & TWO_FETCHES & OP_GROUP & PREDICTION_SIGNAL & Readdata1 & Readdata2 & PC & WRITE_REG1 & WRITE_REG2;
-
+elsif(rising_edge(clk) ) then
+buffer_output <=  BRANCH & MR & MW & P_IN & P_OUT & SP_INC &SP_DEC  & WB1 & WB2 & CALL & RET & ALU_ENABLE & RTI & ALU_SELECTORS & TWO_FETCHES & OP_GROUP & PREDICTION_SIGNAL & Readdata1 & Readdata2 & PC & WRITE_REG1 & WRITE_REG2;
 end if;
+
 
 end process ;
 
