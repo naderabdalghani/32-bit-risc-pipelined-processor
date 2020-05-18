@@ -30,9 +30,6 @@ BEGIN
    BEGIN
       IF RESET = '1' THEN
          RESULT <= (OTHERS => '0');
-         CARRYFLAG <= '0';
-         NEGATIVEFLAG <= '0';
-         ZEROFLAG <= '0';
       ELSE
          IF ENABLE = '1' THEN
             CASE(SEL) IS
@@ -43,7 +40,7 @@ BEGIN
                TMP := ('0' & A) + 1;
                WHEN "0010" => -- DECREMENT
                ALU_RESULT_VAR := A - 1;
-               TMP := ('0' & A) - 1;
+               TMP := ('0' & A) + ('0'& x"FFFFFFFF");
                WHEN "0011" => -- SWAP 
                ALU_RESULT_VAR := B;
                WHEN "0100" | "0101" => -- ADD
