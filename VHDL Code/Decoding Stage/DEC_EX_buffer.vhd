@@ -2,7 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.numeric_std.all; 
 entity DEC_EX_buffer is port(
-buffer_output :out std_logic_vector(125 downto 0);
+buffer_output :out std_logic_vector(131 downto 0);
 Readdata1:in std_logic_vector(31 downto 0);
 Readdata:in  std_logic_vector(31 downto 0);
 EA: in  std_logic_vector(19 downto 0);
@@ -16,7 +16,8 @@ clk:in std_logic;
 Rst:in std_logic;
 BRANCH,MR,MW,P_IN,P_OUT,SP_INC,SP_DEC,CALL,WB1,WB2,RET,ALU_ENABLE,RTI,NO_OPERANDS,IGNORE_RSRC2: IN std_logic;
 ALU_SELECTORS: IN std_logic_vector(3 downto 0);
-OP_GROUP: IN std_logic_vector(1 downto 0)
+OP_GROUP: IN std_logic_vector(1 downto 0);
+Read_Address1_Regfile,Read_Address2_Regfile: IN STD_LOGIC_VECTOR(2 DOWNTO 0)
 );
 end DEC_EX_buffer;
 architecture Behavioral of DEC_EX_buffer is
@@ -35,7 +36,7 @@ if(Rst='1'  ) then
 buffer_output <= (others => '0');
 
 elsif(rising_edge(clk) ) then
-buffer_output <=  NO_OPERANDS & IGNORE_RSRC2 & BRANCH & MR & MW & P_IN & P_OUT & SP_INC &SP_DEC  & WB1 & WB2 & CALL & RET & ALU_ENABLE & RTI & ALU_SELECTORS & TWO_FETCHES & OP_GROUP & PREDICTION_SIGNAL & Readdata1 & Readdata2 & PC & WRITE_REG1 & WRITE_REG2;
+buffer_output <=  Read_Address1_Regfile & Read_Address2_Regfile & NO_OPERANDS & IGNORE_RSRC2 & BRANCH & MR & MW & P_IN & P_OUT & SP_INC &SP_DEC  & WB1 & WB2 & CALL & RET & ALU_ENABLE & RTI & ALU_SELECTORS & TWO_FETCHES & OP_GROUP & PREDICTION_SIGNAL & Readdata1 & Readdata2 & PC & WRITE_REG1 & WRITE_REG2;
 end if;
 
 

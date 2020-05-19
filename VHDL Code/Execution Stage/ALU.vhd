@@ -60,14 +60,14 @@ BEGIN
                WHEN OTHERS => ALU_RESULT_VAR := A;
             END CASE;
             RESULT <= ALU_RESULT_VAR;
-            IF SEL = "1000" THEN
+            IF SEL = "1001" THEN
                CARRYFLAG <= A(32 - TO_INTEGER(UNSIGNED(B)));
-            ELSIF SEL = "1001" THEN
+            ELSIF SEL = "1011" THEN
                CARRYFLAG <= A(TO_INTEGER(UNSIGNED(B)) - 1);
-            ELSIF SEL = "0001" OR SEL = "0010" OR SEL = "0100" OR SEL = "0101" THEN
+            ELSIF SEL = "0001" OR SEL = "0010" OR SEL = "0100" OR SEL = "0110" THEN
                CARRYFLAG <= TMP(32); -- CARRYOUT FLAG
             END IF;
-            IF SEL = "0000" OR SEL = "0001" OR SEL = "0010" OR SEL = "0100" OR SEL = "0101" OR SEL = "0110" OR SEL = "0111" OR SEL = "1000" OR SEL = "1001" THEN
+            IF SEL = "0000" OR SEL = "0001" OR SEL = "0010" OR SEL = "0100" OR SEL = "0110" OR SEL = "0111" OR SEL = "1000" OR SEL = "1001" OR SEL = "1011" THEN
                IF TO_INTEGER(UNSIGNED(ALU_RESULT_VAR)) = 0 THEN
                   ZEROFLAG <= '1';
                ELSE
