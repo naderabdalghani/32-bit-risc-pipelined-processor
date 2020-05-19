@@ -14,7 +14,7 @@ WRITE_DATA1,WRITE_DATA2:in std_logic_vector(31 downto 0);
 Clk,Rst:in std_logic ;
 Instruction:in std_logic_vector(31 downto 0);
 EX_MEM_rdest,EX_MEM_rdest2,MEM_WB_rdest,MEM_WB_rdest2:in std_logic_vector(2 downto 0);
- EX_MEM_WB1,EX_MEM_WB2,MEM_WB_WB1,MEM_WB_WB2:in std_logic;
+EX_MEM_WB1,EX_MEM_WB2,MEM_WB_WB1,MEM_WB_WB2:in std_logic;
 TWO_FETCHES_FROM_FETCHING:in std_logic ;
 address_3:in std_logic_vector(2 downto 0);
 data_3:out std_logic_vector(31 downto 0);
