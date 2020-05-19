@@ -1,48 +1,36 @@
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-entity forwardunit is port(
---R_src1,R_src2 are from ID/EX buffer 
-ForwardA,ForwardB:out std_logic_vector(1 downto 0);
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+ENTITY FORWARDUNIT IS PORT(
+--R_SRC1,R_SRC2 ARE FROM ID/EX BUFFER 
+FORWARDA,FORWARDB:OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
 FORWARD_A_SEL,FORWARD_B_SEL: OUT STD_LOGIC;
-R_src1,R_src2,EX_MEM_rdest,EX_MEM_rdest2,MEM_WB_rdest,MEM_WB_rdest2:in std_logic_vector(2 downto 0);
- EX_MEM_WB1,EX_MEM_WB2,MEM_WB_WB1,MEM_WB_WB2,NO_OPERANDS,IGNORE_RSRC2:in std_logic );
-
-end forwardunit ;
-
+R_SRC1,R_SRC2,EX_MEM_RDEST,EX_MEM_RDEST2,MEM_WB_RDEST,MEM_WB_RDEST2:IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+ EX_MEM_WB1,EX_MEM_WB2,MEM_WB_WB1,MEM_WB_WB2,NO_OPERANDS,IGNORE_RSRC2:IN STD_LOGIC );
+END FORWARDUNIT ;
 
 
-architecture Behavioral of forwardunit is
---signal EX_MEM_WB ,MEM_WB_WB:std_logic;
-begin 
+ARCHITECTURE BEHAVIORAL OF FORWARDUNIT IS
+BEGIN 
 
---EX_MEM_WB <=(EX_MEM_WB1 or EX_MEM_WB2);
---MEM_WB_WB <=(MEM_WB_WB1 or MEM_WB_WB2);
-ForwardA <="01" when (((EX_MEM_WB1 = '1'
-and EX_MEM_rdest = R_src1) or (EX_MEM_WB2 = '1'
-and EX_MEM_rdest2 = R_src1)) and NO_OPERANDS='0') else
-"10" when (((MEM_WB_WB1 = '1'
-and MEM_WB_rdest = R_src1) or  (MEM_WB_WB2 = '1' and MEM_WB_rdest2 = R_src1 )) and NO_OPERANDS='0'
---and (EX_MEM_rdest /= R_src1 or EX_MEM_WB = '0')
-) else
-"00" ;
+FORWARDA <="01" WHEN (((EX_MEM_WB1 = '1'
+AND EX_MEM_RDEST = R_SRC1) OR (EX_MEM_WB2 = '1'
+AND EX_MEM_RDEST2 = R_SRC1)) AND NO_OPERANDS='0') ELSE
+"10" WHEN (((MEM_WB_WB1 = '1' AND MEM_WB_RDEST = R_SRC1) OR  (MEM_WB_WB2 = '1' AND MEM_WB_RDEST2 = R_SRC1 ))
+AND NO_OPERANDS='0') ELSE "00" ;
 
-ForwardB <= "01" when (((EX_MEM_WB1 = '1'
-and EX_MEM_rdest = R_src2) or (EX_MEM_WB2 = '1' and EX_MEM_rdest2 = R_src2)) and NO_OPERANDS='0' and IGNORE_RSRC2='0' )
-else "10" when  (((MEM_WB_WB1= '1'
-and MEM_WB_rdest = R_src2) or (MEM_WB_WB2 = '1' and MEM_WB_rdest2 = R_src1) ) and NO_OPERANDS='0' and IGNORE_RSRC2='0'
---and (EX_MEM_rdest /=  R_src2 or EX_MEM_WB = '0')
-)else
-"00" ;
+FORWARDB <= "01" WHEN (((EX_MEM_WB1 = '1'
+AND EX_MEM_RDEST = R_SRC2) OR (EX_MEM_WB2 = '1' AND EX_MEM_RDEST2 = R_SRC2)) AND NO_OPERANDS='0' AND IGNORE_RSRC2='0' )
+ELSE "10" WHEN  (((MEM_WB_WB1= '1'AND MEM_WB_RDEST = R_SRC2) OR (MEM_WB_WB2 = '1' AND MEM_WB_RDEST2 = R_SRC1) ) 
+AND NO_OPERANDS='0' AND IGNORE_RSRC2='0') ELSE "00" ;
 
--- WHEN 1 GET THE DATA FROM OPERAND #1 ELSE OPERAND #2
-FORWARD_A_SEL <= '1' when
-    ((EX_MEM_rdest = R_src1 AND EX_MEM_WB1 = '1') OR (MEM_WB_rdest = R_src1 AND MEM_WB_WB1 = '1' AND (EX_MEM_WB1 = '0' OR  EX_MEM_rdest /= R_src1)))
+-- WHEN 1 GET THE DATA FROM OPERAND #1 (RESULT) ELSE OPERAND #2 (OPENRAND 2) 
+-- TO HANDLE CASE LIKE FORWARDING 2 OPERANDS FROM THE SAME BUFFER IN THE SAME TIME 
+FORWARD_A_SEL <= '1' WHEN
+    ((EX_MEM_RDEST = R_SRC1 AND EX_MEM_WB1 = '1') OR (MEM_WB_RDEST = R_SRC1 AND MEM_WB_WB1 = '1' AND (EX_MEM_WB1 = '0' OR  EX_MEM_RDEST /= R_SRC1)))
      ELSE '0';
---FORWARD_A_SEL<='1';
---FORWARD_B_SEL <= '1';
 
-FORWARD_B_SEL <= '1' when
-    ((EX_MEM_rdest = R_src2 AND EX_MEM_WB1 = '1') OR (MEM_WB_rdest = R_src2 AND MEM_WB_WB1 = '1' AND (EX_MEM_WB1 = '0' OR EX_MEM_rdest /= R_src2)))
+FORWARD_B_SEL <= '1' WHEN
+    ((EX_MEM_RDEST = R_SRC2 AND EX_MEM_WB1 = '1') OR (MEM_WB_RDEST = R_SRC2 AND MEM_WB_WB1 = '1' AND (EX_MEM_WB1 = '0' OR EX_MEM_RDEST /= R_SRC2)))
     ELSE '0';
  
-end Behavioral;
+END BEHAVIORAL;
