@@ -61,7 +61,7 @@ BEGIN
             END CASE;
             RESULT <= ALU_RESULT_VAR;
             IF SEL = "1001" THEN
-               CARRYFLAG <= A(32 - TO_INTEGER(UNSIGNED(B)));
+               CARRYFLAG <= A(20 - TO_INTEGER(UNSIGNED(B)));
             ELSIF SEL = "1011" THEN
                CARRYFLAG <= A(TO_INTEGER(UNSIGNED(B)) - 1);
             ELSIF SEL = "0001" OR SEL = "0010" OR SEL = "0100" OR SEL = "0110" THEN
