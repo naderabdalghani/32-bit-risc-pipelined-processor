@@ -6,14 +6,15 @@ Instruction:in std_logic_vector(6 downto 0);
  TWO_FETCHES,OP_GROUP:out std_logic_vector(1 downto 0);
  BRANCH,MR,MW,P_IN,P_OUT,SP_INC,SP_DEC,WB1,WB2,CALL,RET,
 ALU_ENABLE,RTI,NO_OPERANDS,IGNORE_RSRC2:out std_logic;
-BufferWriteEnable : in std_logic) ;
+BufferWriteEnable : in std_logic ;
+TWO_FETCHES_FROM_FETCHING : in std_logic) ;
 end controlUnit ;
 
 architecture Behavioral of controlUnit is
 begin
-process(Instruction,BufferWriteEnable)
+process(Instruction,BufferWriteEnable,TWO_FETCHES_FROM_FETCHING)
 begin
-if BufferWriteEnable='1' then 
+if BufferWriteEnable='1' OR TWO_FETCHES_FROM_FETCHING = '1' then 
     BRANCH <='0';
     MR <='0';
     MW <='0';
@@ -29,8 +30,8 @@ if BufferWriteEnable='1' then
     RET<='0';
     ALU_ENABLE<='0';
     RTI<='0';
-    NO_OPERANDS <='0';
-    IGNORE_RSRC2 <='0';
+    NO_OPERANDS <='1';
+    IGNORE_RSRC2 <='1';
 else
 case (Instruction) is
 when "0000000" => --nop
