@@ -69,6 +69,8 @@ SIGNAL TWO_FETCHES_FROM_FETCHING: std_logic ;
 SIGNAL address_3: std_logic_vector(2 downto 0);
 SIGNAL data_3: std_logic_vector(31 downto 0);
 SIGNAL WB_1,WB_2: std_logic ;
+SIGNAL FORWARD_A_SEL,FORWARD_B_SEL:  STD_LOGIC;
+
 -------------------------------------------------------------------------------------------
 
 
@@ -76,8 +78,10 @@ SIGNAL WB_1,WB_2: std_logic ;
 --------------------------- EXECUTION STAGE SIGNALS ----------------------------------------
 -------------------------------------------------------------------------------------------
 SIGNAL ID_EX     :   STD_LOGIC_VECTOR(129 downto 0); 
-SIGNAL EX_MEM_in     :   STD_LOGIC_VECTOR(31 downto 0); 
-SIGNAL MEM_WB     :   STD_LOGIC_VECTOR(31 downto 0); 
+SIGNAL EX_MEM_in_1     :   STD_LOGIC_VECTOR(31 downto 0); 
+SIGNAL EX_MEM_in_2     :   STD_LOGIC_VECTOR(31 downto 0); 
+SIGNAL MEM_WB_1     :   STD_LOGIC_VECTOR(31 downto 0); 
+SIGNAL MEM_WB_2     :   STD_LOGIC_VECTOR(31 downto 0); 
 SIGNAL SelForwardingUnit1  :   STD_LOGIC_VECTOR(1 downto 0); 
 SIGNAL SelForwardingUnit2  :   STD_LOGIC_VECTOR(1 downto 0); 
 SIGNAL RTIfromWB :  std_logic ;
@@ -175,8 +179,10 @@ address_3<=BRANCHING_REG;
 --------------------------- SETTING EXECUTION SIGNALS -------------------------------------
 -------------------------------------------------------------------------------------------
 ID_EX <=Dec_output(129 DOWNTO 0); 
-EX_MEM_IN <=EX_MEM_out(101 downto 70); 
-MEM_WB <=MEM_WB_OUT(34 DOWNTO 3); 
+EX_MEM_IN_1 <=EX_MEM_out(101 downto 70); 
+EX_MEM_in_2 <=EX_MEM_out(69 DOWNTO 38);
+MEM_WB_1 <=MEM_WB_OUT(34 DOWNTO 3); 
+MEM_WB_2 <= MEM_WB_OUT(66 DOWNTO 35);
 SELFORWARDINGUNIT1 <=ForwardA; 
 SELFORWARDINGUNIT2  <=ForwardB; 
 RTIFROMWB <=MEM_WB_OUT(2) ;
@@ -233,13 +239,17 @@ U1 : ENTITY WORK.FETCHING_STAGE   PORT MAP ( DATA_EXE_STAGE, DATA_DATA_MEMORY
  Clk,Rst,
  Instruction,
  EX_MEM_rdest,EX_MEM_rdest2,MEM_WB_rdest,MEM_WB_rdest2,
- EX_MEM_WB1,EX_MEM_WB2,MEM_WB_WB1,MEM_WB_WB2,TWO_FETCHES_FROM_FETCHING,address_3,data_3,R0,R1,R2,R3,R4,R5,R6,R7,WB_1,WB_2,Load_use_case);
+ EX_MEM_WB1,EX_MEM_WB2,MEM_WB_WB1,MEM_WB_WB2,TWO_FETCHES_FROM_FETCHING,address_3,data_3,R0,R1,R2,R3,R4,R5,R6,R7,WB_1,WB_2,Load_use_case,
+ FORWARD_A_SEL,FORWARD_B_SEL);
 
 
 
 U3 : ENTITY WORK.ExecutionStage   PORT MAP (ID_EX, 
-EX_MEM_in, 
-MEM_WB, 
+EX_MEM_in_1, 
+EX_MEM_in_2,
+MEM_WB_1, 
+MEM_WB_2,
+FORWARD_A_SEL,FORWARD_B_SEL,
 RST,CLK,
 SelForwardingUnit1, 
 SelForwardingUnit2, 
