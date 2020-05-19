@@ -63,7 +63,7 @@ SIGNAL ForwardA,ForwardB: std_logic_vector(1 downto 0);
 SIGNAL LOAD: std_logic ;
 SIGNAL WRITE_DATA1,WRITE_DATA2: std_logic_vector(31 downto 0);
 SIGNAL Instruction: std_logic_vector(31 downto 0);
-SIGNAL EX_MEM_rdest,MEM_WB_rdest: std_logic_vector(2 downto 0);
+SIGNAL EX_MEM_rdest,EX_MEM_rdest2,MEM_WB_rdest,MEM_WB_rdest2: std_logic_vector(2 downto 0);
 SIGNAL EX_MEM_WB1,EX_MEM_WB2,MEM_WB_WB1,MEM_WB_WB2: std_logic ;
 SIGNAL TWO_FETCHES_FROM_FETCHING: std_logic ;
 SIGNAL address_3: std_logic_vector(2 downto 0);
@@ -159,7 +159,9 @@ WRITE_DATA1<=MEM_WB_OUT(34 DOWNTO 3);
 WRITE_DATA2<=MEM_WB_OUT(66 DOWNTO 35);
 Instruction<=FE_ID(31 DOWNTO 0);
 EX_MEM_rdest<=EX_MEM_out(5 downto 3);
+EX_MEM_rdest2<=EX_MEM_out(2 downto 0);
 MEM_WB_rdest<=MEM_WB_OUT(69 DOWNTO 67);
+MEM_WB_rdest2<=MEM_WB_OUT(72 DOWNTO 70);
 EX_MEM_WB1<=EX_MEM_out(105);
 EX_MEM_WB2<=EX_MEM_out(104);
 MEM_WB_WB1<=MEM_WB_OUT(0);
@@ -230,7 +232,7 @@ U1 : ENTITY WORK.FETCHING_STAGE   PORT MAP ( DATA_EXE_STAGE, DATA_DATA_MEMORY
  WRITE_DATA1,WRITE_DATA2,
  Clk,Rst,
  Instruction,
- EX_MEM_rdest,MEM_WB_rdest,
+ EX_MEM_rdest,EX_MEM_rdest2,MEM_WB_rdest,MEM_WB_rdest2,
  EX_MEM_WB1,EX_MEM_WB2,MEM_WB_WB1,MEM_WB_WB2,TWO_FETCHES_FROM_FETCHING,address_3,data_3,R0,R1,R2,R3,R4,R5,R6,R7,WB_1,WB_2,Load_use_case);
 
 
