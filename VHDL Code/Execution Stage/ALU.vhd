@@ -30,6 +30,9 @@ BEGIN
    BEGIN
       IF RESET = '1' THEN
          RESULT <= (OTHERS => '0');
+         CARRYFLAG<='0';
+         NEGATIVEFLAG<='0';
+         ZEROFLAG<='0';
       ELSE
          IF ENABLE = '1' THEN
             CASE(SEL) IS
@@ -48,7 +51,7 @@ BEGIN
                TMP := ('0' & A) + ('0' & B);
                WHEN "0110" => -- SUB
                ALU_RESULT_VAR := A - B;
-               TMP := ('0' & A) - ('0' & B);
+               TMP := ('0' & A) + ('0' & (NOT B +1));
                WHEN "0111" => --  AND
                ALU_RESULT_VAR := A AND B;
                WHEN "1000" => -- OR
@@ -68,10 +71,10 @@ BEGIN
             if UNSIGNED(B) > 0 then
                CARRYFLAG <= A(TO_INTEGER(UNSIGNED(B)) - 1);
             end if ;
-            ELSIF SEL = "0001" OR SEL = "0010" OR SEL = "0100" OR SEL = "0110" THEN
+            ELSIF SEL = "0001" OR SEL = "0010" OR SEL = "0100" OR SEL = 0101 OR SEL = "0110" THEN
                CARRYFLAG <= TMP(32); -- CARRYOUT FLAG
             END IF;
-            IF SEL = "0000" OR SEL = "0001" OR SEL = "0010" OR SEL = "0100" OR SEL = "0110" OR SEL = "0111" OR SEL = "1000" OR SEL = "1001" OR SEL = "1011" THEN
+            IF SEL = "0000" OR SEL = "0001" OR SEL = "0010" OR SEL = "0100" OR SEL = 0101 OR SEL = "0110" OR SEL = "0111" OR SEL = "1000" OR SEL = "1001" OR SEL = "1011" THEN
                IF TO_INTEGER(UNSIGNED(ALU_RESULT_VAR)) = 0 THEN
                   ZEROFLAG <= '1';
                ELSE
