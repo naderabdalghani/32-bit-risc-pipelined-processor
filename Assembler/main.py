@@ -132,11 +132,11 @@ def assemble_instructions(input_file):
                 eff = str(bin(int(two_operand_effective_match.group('eff'), 16))).lstrip("0b")
                 r = "0" * (3 - len(r)) + r
                 eff = "0" * (20 - len(eff)) + eff
-                eff_msp = eff[0:16]
-                eff_lsp = eff[16:20]
-                instruction = opcodes[two_operand_effective_match.group('op').upper()] + r + "00" + eff_lsp
+                eff_msp = eff[0:4]
+                eff_lsp = eff[4:20]
+                instruction = opcodes[two_operand_effective_match.group('op').upper()] + r + "00" + eff_msp
                 instructions.append(instruction)
-                instruction = eff_msp
+                instruction = eff_lsp
             else:
                 raise AssemblerSyntaxError(line_number, "Invalid line: %s" % line)
             instructions.append(instruction)
