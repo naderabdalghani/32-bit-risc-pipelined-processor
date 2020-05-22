@@ -60,6 +60,8 @@ BEGIN
                ALU_RESULT_VAR := STD_LOGIC_VECTOR(SHIFT_LEFT(UNSIGNED(A), TO_INTEGER(UNSIGNED(B))));
                WHEN "1011" => -- SHR
                ALU_RESULT_VAR := STD_LOGIC_VECTOR(SHIFT_RIGHT(UNSIGNED(A), TO_INTEGER(UNSIGNED(B))));
+               WHEN "1010" => -- LDM
+               ALU_RESULT_VAR := B;
                WHEN OTHERS => ALU_RESULT_VAR := A;
             END CASE;
             RESULT <= ALU_RESULT_VAR;
