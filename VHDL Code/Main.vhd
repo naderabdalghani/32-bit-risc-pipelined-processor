@@ -275,7 +275,7 @@ U4 : ENTITY WORK.MEMORY_STAGE   PORT MAP (CLK,RST, MEM_WB_IN ,
  OUT_PORT,
  INTERRUPT_1,
  RETURN_INT,
- MEM_WB_OUT,'1');
+ MEM_WB_OUT,SP);
 
  U5 : ENTITY WORK.DFF PORT MAP (LOAD,RST,CLK,load_FROM_DFLIPFLOP);
 -------------------------------------------------------------------------------------------
