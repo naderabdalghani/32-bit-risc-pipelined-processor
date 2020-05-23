@@ -7,14 +7,15 @@ Instruction:in std_logic_vector(6 downto 0);
  BRANCH,MR,MW,P_IN,P_OUT,SP_INC,SP_DEC,WB1,WB2,CALL,RET,
 ALU_ENABLE,RTI,NO_OPERANDS,IGNORE_RSRC2:out std_logic;
 BufferWriteEnable : in std_logic ;
-TWO_FETCHES_FROM_FETCHING : in std_logic) ;
+TWO_FETCHES_FROM_FETCHING : in std_logic;
+wrongDecision:in std_logic) ;
 end controlUnit ;
 
 architecture Behavioral of controlUnit is
 begin
-process(Instruction,BufferWriteEnable,TWO_FETCHES_FROM_FETCHING)
+process(Instruction,BufferWriteEnable,TWO_FETCHES_FROM_FETCHING,wrongDecision)
 begin
-if BufferWriteEnable='1' OR TWO_FETCHES_FROM_FETCHING = '1' then 
+if BufferWriteEnable='1' OR TWO_FETCHES_FROM_FETCHING = '1' OR wrongDecision = '1' then 
     BRANCH <='0';
     MR <='0';
     MW <='0';
