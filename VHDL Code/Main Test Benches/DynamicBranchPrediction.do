@@ -20,14 +20,4 @@ force -freeze sim:/main/RST 1 0
 force -freeze sim:/main/CLK 1 0, 0 {50 ns} -r 100
 run
 force -freeze sim:/main/RST 0 0
-run
-run
-run
-force -freeze sim:/main/IN_PORT 32'h0CDAFE19 0
-run
-force -freeze sim:/main/IN_PORT ffff 0
-run
-force -freeze sim:/main/IN_PORT f320 0
-run 1700
-
-
+run 13900
