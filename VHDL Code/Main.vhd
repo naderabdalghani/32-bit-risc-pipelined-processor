@@ -185,7 +185,7 @@ MEM_WB_2 <= MEM_WB_OUT(66 DOWNTO 35);
 SELFORWARDINGUNIT1 <=ForwardA; 
 SELFORWARDINGUNIT2  <=ForwardB; 
 RTIFROMWB <=MEM_WB_OUT(2) ;
-CCRFROMWB <=MEM_WB_IN(6 DOWNTO 3);
+CCRFROMWB <=MEM_WB_OUT(6 DOWNTO 3);
 -------------------------------------------------------------------------------------------
 
 
