@@ -146,7 +146,7 @@ DYNAMIC_BRANCH_ADDRESS<=EX_MEM_out(74 downto 70);
 JUMPING_REG<=data_3;
 ZERO_FLAG<=CCR_OUT(0);
 INTERRUPT_SIGNAL<=INT;
-RTI_SIGNAL_FROM_ALL_STAGES<=EX_MEM_out(102) OR Dec_output(111) OR MEM_WB_OUT(2) ; 
+RTI_SIGNAL_FROM_ALL_STAGES<=EX_MEM_out(102) OR Dec_output(111); 
 -------------------------------------------------------------------------------------------
 
 
