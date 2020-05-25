@@ -1,47 +1,47 @@
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-USE IEEE.numeric_std.all; 
-entity DEC_EX_buffer is port(
-buffer_output :out std_logic_vector(131 downto 0);
-Readdata1:in std_logic_vector(31 downto 0);
-Readdata:in  std_logic_vector(31 downto 0);
-EA: in  std_logic_vector(19 downto 0);
-IMM:in std_logic_vector(15 downto 0);
-TWO_FETCHES:in std_logic_vector(1 downto 0);
-PREDICTION_SIGNAL:in std_logic;
-PC:in  std_logic_vector(31 downto 0);
-WRITE_REG1:in std_logic_vector(2 downto 0);
-WRITE_REG2:in std_logic_vector(2 downto 0);
-clk:in std_logic;
-Rst:in std_logic;
-BRANCH,MR,MW,P_IN,P_OUT,SP_INC,SP_DEC,CALL,WB1,WB2,RET,ALU_ENABLE,RTI,NO_OPERANDS,IGNORE_RSRC2: IN std_logic;
-ALU_SELECTORS: IN std_logic_vector(3 downto 0);
-OP_GROUP: IN std_logic_vector(1 downto 0);
-Read_Address1_Regfile,Read_Address2_Regfile: IN STD_LOGIC_VECTOR(2 DOWNTO 0)
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.NUMERIC_STD.ALL; 
+ENTITY DEC_EX_BUFFER IS PORT(
+BUFFER_OUTPUT :OUT STD_LOGIC_VECTOR(131 DOWNTO 0);
+READDATA1:IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+READDATA:IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+EA: IN  STD_LOGIC_VECTOR(19 DOWNTO 0);
+IMM:IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+TWO_FETCHES:IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+PREDICTION_SIGNAL:IN STD_LOGIC;
+PC:IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+WRITE_REG1:IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+WRITE_REG2:IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+CLK:IN STD_LOGIC;
+RST:IN STD_LOGIC;
+BRANCH,MR,MW,P_IN,P_OUT,SP_INC,SP_DEC,CALL,WB1,WB2,RET,ALU_ENABLE,RTI,NO_OPERANDS,IGNORE_RSRC2: IN STD_LOGIC;
+ALU_SELECTORS: IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+OP_GROUP: IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+READ_ADDRESS1_REGFILE,READ_ADDRESS2_REGFILE: IN STD_LOGIC_VECTOR(2 DOWNTO 0)
 );
-end DEC_EX_buffer;
-architecture Behavioral of DEC_EX_buffer is
-signal Readdata2:std_logic_vector(31 downto 0);
+END DEC_EX_BUFFER;
+ARCHITECTURE BEHAVIORAL OF DEC_EX_BUFFER IS
+SIGNAL READDATA2:STD_LOGIC_VECTOR(31 DOWNTO 0);
 
-begin
+BEGIN
 
-Readdata2 <= Readdata when TWO_FETCHES ="00"
-else "000000000000" &EA when TWO_FETCHES ="10"
-else std_logic_vector(resize(signed(IMM), Readdata2'length))when TWO_FETCHES ="01"
-else Readdata; 
+READDATA2 <= READDATA WHEN TWO_FETCHES ="00"
+ELSE "000000000000" &EA WHEN TWO_FETCHES ="10"
+ELSE STD_LOGIC_VECTOR(RESIZE(SIGNED(IMM), READDATA2'LENGTH))WHEN TWO_FETCHES ="01"
+ELSE READDATA; 
 
- process(clk,Rst) 
- begin
-if(Rst='1'  ) then
-buffer_output <= (others => '0');
+ PROCESS(CLK,RST) 
+ BEGIN
+IF(RST='1'  ) THEN
+BUFFER_OUTPUT <= (OTHERS => '0');
 
-elsif(rising_edge(clk) ) then
-buffer_output <=  Read_Address1_Regfile & Read_Address2_Regfile & NO_OPERANDS & IGNORE_RSRC2 & BRANCH & MR & MW & P_IN & P_OUT & SP_INC &SP_DEC  & WB1 & WB2 & CALL & RET & ALU_ENABLE & RTI & ALU_SELECTORS & TWO_FETCHES & OP_GROUP & PREDICTION_SIGNAL & Readdata1 & Readdata2 & PC & WRITE_REG1 & WRITE_REG2;
-end if;
-
-
-end process ;
+ELSIF(RISING_EDGE(CLK) ) THEN
+BUFFER_OUTPUT <=  READ_ADDRESS1_REGFILE & READ_ADDRESS2_REGFILE & NO_OPERANDS & IGNORE_RSRC2 & BRANCH & MR & MW & P_IN & P_OUT & SP_INC &SP_DEC  & WB1 & WB2 & CALL & RET & ALU_ENABLE & RTI & ALU_SELECTORS & TWO_FETCHES & OP_GROUP & PREDICTION_SIGNAL & READDATA1 & READDATA2 & PC & WRITE_REG1 & WRITE_REG2;
+END IF;
 
 
+END PROCESS ;
 
-end Behavioral ;
+
+
+END BEHAVIORAL ;
