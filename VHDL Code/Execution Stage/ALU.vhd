@@ -94,6 +94,7 @@ BEGIN
       END IF;
    END PROCESS;
    RES <= RESULT; -- ALU OUT
+   CCR(3) <= '0';
    CCR(2) <= CARRYFLAG;
    CCR(1) <= NEGATIVEFLAG;
    CCR(0) <= ZEROFLAG;
