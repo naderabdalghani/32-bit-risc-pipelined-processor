@@ -145,7 +145,6 @@ RDST_MEM_WB <=MEM_WB_OUT(69 DOWNTO 67);
 RSRC_MEM_WB<=MEM_WB_OUT(72 DOWNTO 70);
 DYNAMIC_BRANCH_ADDRESS<=EX_MEM_out(74 downto 70);
 JUMPING_REG<=data_3;
-ZERO_FLAG<=CCR_OUT(0);
 INTERRUPT_SIGNAL<=INT;
 RTI_SIGNAL_FROM_ALL_STAGES<=EX_MEM_out(102) OR Dec_output(111) OR DEC_OUTPUT(113); 
 -------------------------------------------------------------------------------------------
@@ -280,6 +279,7 @@ U4 : ENTITY WORK.MEMORY_STAGE   PORT MAP (CLK,RST, MEM_WB_IN ,
 
  U5 : ENTITY WORK.DFF PORT MAP (LOAD,RST,CLK,load_FROM_DFLIPFLOP);
  U6 : ENTITY WORK.DFF PORT MAP (Dec_output(123),RST,CLK,JZ_EXE_STAGE);
+ U7 : ENTITY WORK.DFF PORT MAP (CCR_out(0),RST,CLK,ZERO_FLAG);
 -------------------------------------------------------------------------------------------
 
 END DATAFLOW;
