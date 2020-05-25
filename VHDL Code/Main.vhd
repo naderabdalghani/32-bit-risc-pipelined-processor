@@ -70,6 +70,7 @@ SIGNAL address_3: std_logic_vector(2 downto 0);
 SIGNAL data_3: std_logic_vector(31 downto 0);
 SIGNAL WB_1,WB_2: std_logic ;
 SIGNAL FORWARD_A_SEL,FORWARD_B_SEL:  STD_LOGIC;
+SIGNAL WRONG_DECISION_RET_RTI_DECODING_STAGE: STD_LOGIC;
 
 -------------------------------------------------------------------------------------------
 
@@ -146,7 +147,7 @@ DYNAMIC_BRANCH_ADDRESS<=EX_MEM_out(74 downto 70);
 JUMPING_REG<=data_3;
 ZERO_FLAG<=CCR_OUT(0);
 INTERRUPT_SIGNAL<=INT;
-RTI_SIGNAL_FROM_ALL_STAGES<=EX_MEM_out(102) OR Dec_output(111); 
+RTI_SIGNAL_FROM_ALL_STAGES<=EX_MEM_out(102) OR Dec_output(111) OR DEC_OUTPUT(113); 
 -------------------------------------------------------------------------------------------
 
 
@@ -171,6 +172,7 @@ MEM_WB_WB1<=MEM_WB_OUT(0);
 MEM_WB_WB2<=MEM_WB_OUT(1);
 TWO_FETCHES_FROM_FETCHING<= TWO_FETCHES;
 address_3<=BRANCHING_REG;
+WRONG_DECISION_RET_RTI_DECODING_STAGE <= WRONG_DECISION OR Dec_output(111) OR DEC_OUTPUT(113);
 -------------------------------------------------------------------------------------------
 
 
@@ -239,7 +241,7 @@ U1 : ENTITY WORK.FETCHING_STAGE   PORT MAP ( DATA_EXE_STAGE, DATA_DATA_MEMORY
  Instruction,
  EX_MEM_rdest,EX_MEM_rdest2,MEM_WB_rdest,MEM_WB_rdest2,
  EX_MEM_WB1,EX_MEM_WB2,MEM_WB_WB1,MEM_WB_WB2,TWO_FETCHES_FROM_FETCHING,address_3,data_3,R0,R1,R2,R3,R4,R5,R6,R7,WB_1,WB_2,Load_use_case,
- FORWARD_A_SEL,FORWARD_B_SEL,WRONG_DECISION);
+ FORWARD_A_SEL,FORWARD_B_SEL,WRONG_DECISION_RET_RTI_DECODING_STAGE);
 
 
 
