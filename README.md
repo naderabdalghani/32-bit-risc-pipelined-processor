@@ -80,7 +80,7 @@ The [`Common`](https://github.com/naderabdalghani/32-bit-risc-pipelined-processo
 
 **Register File Decoder:**
 
-![control-unit-decode][control-unit-decode]
+![reg-file-decode][reg-file-decode]
 
 ### Execution Stage
 
