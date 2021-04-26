@@ -121,5 +121,5 @@ The [`Common`](https://github.com/naderabdalghani/32-bit-risc-pipelined-processo
 
 * [Sarah Ra'fat](https://github.com/sarahRaafat15)
 * [Mahmoud Mohamad](https://github.com/mmmacmp)
-* [Muhanad Atef](https://github.com/Muhanad23)
+* [Muhanad Atef](https://github.com/MuhanadAtef)
 * [Nader AbdAlGhani](https://github.com/naderabdalghani)
